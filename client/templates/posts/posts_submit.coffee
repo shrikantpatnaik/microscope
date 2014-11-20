@@ -8,7 +8,7 @@ Template.postSubmit.events "submit form": (e) ->
     if error
       return alert(error.reason)
 
-    alert "This link has already been posted"  if result.postExists
+    throwError "This link has already been posted"  if result.postExists
     Router.go 'postPage',
       _id: result._id
 
