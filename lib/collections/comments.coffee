@@ -20,4 +20,8 @@ Meteor.methods
       $inc:
         commentsCount: 1
 
-    Comments.insert comment
+    comment._id = Comments.insert comment
+
+    createCommentNotification(comment)
+
+    comment._id
