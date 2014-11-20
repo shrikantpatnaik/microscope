@@ -10,6 +10,8 @@ Router.route "/",
 
 Router.route "/posts/:_id",
   name: "postPage"
+  waitOn: ->
+    Meteor.subscribe 'comments', @params._id
   data: ->
     Posts.findOne @params._id
 
