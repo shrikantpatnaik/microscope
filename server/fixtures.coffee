@@ -48,3 +48,16 @@ if Posts.find().count() is 0
     url: "http://themeteorbook.com"
     submitted: new Date(now - 12 * 3600 * 1000)
     commentsCount: 0
+
+  i = 0
+
+  while i < 10
+    Posts.insert
+      title: "Test post #" + i
+      author: sacha.profile.name
+      userId: sacha._id
+      url: "http://google.com/?q=test-" + i
+      submitted: new Date(now - i * 3600 * 1000)
+      commentsCount: 0
+
+    i++
