@@ -47,22 +47,22 @@ Meteor.methods
       _id: postId
     }
 
-    upvote: (postId) ->
-      check @userId, String
-      check postId, String
-      affected = Posts.update(
-        _id: postId
-        upvoters:
-          $ne: @userId
-      ,
-        $addToSet:
-          upvoters: @userId
+  upvote: (postId) ->
+    check @userId, String
+    check postId, String
+    affected = Posts.update(
+      _id: postId
+      upvoters:
+        $ne: @userId
+    ,
+      $addToSet:
+        upvoters: @userId
 
-        $inc:
-          votes: 1
-      )
-      throw new Meteor.Error("invalid", "You weren't able to upvote that post")  unless affected
-      return
+      $inc:
+        votes: 1
+    )
+    throw new Meteor.Error("invalid", "You weren't able to upvote that post")  unless affected
+    return
 
 
 @validatePost = (post) ->
