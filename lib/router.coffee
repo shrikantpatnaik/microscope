@@ -113,7 +113,38 @@ Router.route "/feed.xml",
     @response.write feed.xml()
     @response.end()
 
+Router.route "/api/posts",
+  where: "server"
+  name: "apiPosts"
+  action: ->
+    parameters = @request.query
+    limit = (if !!parameters.limit then parseInt(parameters.limit) else 20)
+    data = Posts.find({},
+      limit: limit
+      fields:
+        title: 1
+        author: 1
+        url: 1
+        submitted: 1
+    ).fetch()
+    @response.write JSON.stringify(data)
+    @response.end()
+    return
 
+Router.route "/api/posts/:_id",
+  where: "server"
+  name: "apiPost"
+  action: ->
+    post = Posts.findOne(@params._id)
+    if post
+      @response.write JSON.stringify(post)
+    else
+      @response.writeHead 404,
+        "Content-Type": "text/html"
+
+      @response.write "Post not found."
+    @response.end()
+    return
 
 if Meteor.isClient
   Router.onBeforeAction "dataNotFound",
