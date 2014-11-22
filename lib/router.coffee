@@ -4,6 +4,7 @@ Router.configure
   notFoundTemplate: 'notFound'
   waitOn: ->
     [
+      Meteor.subscribe 'currentUser'
       Meteor.subscribe 'notifications'
     ]
 

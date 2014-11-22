@@ -18,3 +18,9 @@ Meteor.publish "notifications", ->
     userId: @userId
     read: false
 
+Meteor.publish "currentUser", ->
+  Meteor.users.find @userId,
+    fields:
+      createdAt: 1
+      intercomHash: 1
+
