@@ -88,8 +88,36 @@ requireLogin = ->
     @next()
   return
 
-Router.onBeforeAction "dataNotFound",
-  only: "postPage"
+Router.route "/feed.xml",
+  where: "server"
+  name: "rss"
+  action: ->
+    feed = new RSS(
+      title: "New Microscope Posts"
+      description: "The latest posts from Microscope, the smallest news aggregator."
+    )
 
-Router.onBeforeAction requireLogin,
-  only: 'postSubmit'
+    Posts.find({},
+      sort:
+        submitted: -1
+
+      limit: 20
+    ).forEach (post) ->
+      feed.item
+        title: post.title
+        description: post.body
+        author: post.author
+        date: post.submitted
+        url: "/posts/" + post._id
+
+    @response.write feed.xml()
+    @response.end()
+
+
+
+if Meteor.isClient
+  Router.onBeforeAction "dataNotFound",
+    only: "postPage"
+
+  Router.onBeforeAction requireLogin,
+    only: 'postSubmit'
