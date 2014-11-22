@@ -41,6 +41,10 @@ Meteor.methods
       upvoters: []
       votes: 0
 
+    if Meteor.isServer
+      shortUrl = Bitly.shortenURL(post.url)
+      if post.url && shortUrl
+        post.shortUrl = shortUrl
     postId = @Posts.insert(post)
 
     {
